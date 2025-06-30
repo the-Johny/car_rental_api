@@ -1,0 +1,15 @@
+
+GET http://localhost:3000/payments
+Authorization: Bearer {{token}}
+
+###
+
+POST http://localhost:3000/payments
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "bookingId": "{{bookingId}}",
+  "amount": 160,
+  "method": "MPESA"
+}

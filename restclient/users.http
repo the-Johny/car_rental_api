@@ -1,0 +1,47 @@
+GET http://localhost:3000/users
+Authorization: Bearer {{token}}
+
+###
+
+GET http://localhost:3000/users/{{userId}}
+Authorization: Bearer {{token}}
+
+###
+
+PATCH http://localhost:3000/users/{{userId}}
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "name": "Updated Name"
+}
+
+###
+
+DELETE http://localhost:3000/users/{{userId}}
+Authorization: Bearer {{token}}
+
+
+### vehicles.http
+
+GET http://localhost:3000/vehicles
+
+###
+
+GET http://localhost:3000/vehicles/{{vehicleId}}
+
+###
+
+POST http://localhost:3000/vehicles
+Authorization: Bearer {{adminToken}}
+Content-Type: application/json
+
+{
+  "name": "Toyota RAV4",
+  "title": "Spacious SUV",
+  "description": "Good for road trips",
+  "pricePerHour": 20,
+  "category": "SUV",
+  "location": "Nairobi",
+  "imageUrl": "https://img.com/car.png"
+}

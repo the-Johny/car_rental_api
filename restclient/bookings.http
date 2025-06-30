@@ -1,0 +1,21 @@
+GET http://localhost:3000/bookings
+Authorization: Bearer {{token}}
+
+###
+
+POST http://localhost:3000/bookings
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "userId": "{{userId}}",
+  "vehicleId": "{{vehicleId}}",
+  "startdate": "2025-07-01T09:00:00.000Z",
+  "enddate": "2025-07-01T17:00:00.000Z",
+  "totalPrice": 160
+}
+
+###
+
+GET http://localhost:3000/bookings/{{bookingId}}
+Authorization: Bearer {{token}}

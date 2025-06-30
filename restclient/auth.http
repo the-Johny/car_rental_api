@@ -1,0 +1,203 @@
+### Auth API Testing with REST Client
+### Base URL
+@baseUrl = http://localhost:3000/api/v1
+@contentType = application/json
+
+### Variables for testing
+@testEmail = johnndichukimani2021@example.com
+@testPassword = password123
+@testPhone = +1234562190
+@accessToken = your_access_token_here
+@resetToken = your_reset_token_here
+@verifyToken = your_verify_token_here
+
+### 1. Register a new user
+POST {{baseUrl}}/auth/register
+Content-Type: {{contentType}}
+
+{
+  "firstName": "John",
+  "lastName": "Doe",
+  "email": "{{testEmail}}",
+  "password": "{{testPassword}}",
+  "phone": "{{testPhone}}",
+  "role": "CUSTOMER"
+}
+
+### 2. Register an admin user
+POST {{baseUrl}}/auth/register
+Content-Type: {{contentType}}
+
+{
+  "firstName": "Admin",
+  "lastName": "User",
+  "email": "admin@example.com",
+  "password": "admin123456",
+  "phone": "+1234567891",
+  "role": "ADMIN"
+}
+
+### 3. Login with user credentials
+POST {{baseUrl}}/auth/login
+Content-Type: {{contentType}}
+
+{
+  "email": "{{testEmail}}",
+  "password": "{{testPassword}}"
+}
+
+### 4. Login with wrong credentials (should fail)
+POST {{baseUrl}}/auth/login
+Content-Type: {{contentType}}
+
+{
+  "email": "{{testEmail}}",
+  "password": "wrongpassword"
+}
+
+### 5. Get user profile (requires authentication)
+GET {{baseUrl}}/auth/profile
+Authorization: Bearer {{accessToken}}
+
+### 6. Validate token
+GET {{baseUrl}}/auth/validate
+Authorization: Bearer {{accessToken}}
+
+### 7. Change password (requires authentication)
+POST {{baseUrl}}/auth/change-password
+Content-Type: {{contentType}}
+Authorization: Bearer {{accessToken}}
+
+{
+  "currentPassword": "{{testPassword}}",
+  "newPassword": "newpassword123"
+}
+
+### 8. Forgot password
+POST {{baseUrl}}/auth/forgot-password
+Content-Type: {{contentType}}
+
+{
+  "email": "{{testEmail}}"
+}
+
+### 9. Reset password with token
+POST {{baseUrl}}/auth/reset-password
+Content-Type: {{contentType}}
+
+{
+  "resetToken": "{{resetToken}}",
+  "newPassword": "resetpassword123"
+}
+
+### 10. Verify email
+GET {{baseUrl}}/auth/verify-email?token={{verifyToken}}
+
+### 11. Resend verification email
+POST {{baseUrl}}/auth/resend-verification
+Content-Type: {{contentType}}
+
+{
+  "email": "{{testEmail}}"
+}
+
+### 12. Test with invalid email format (should fail)
+POST {{baseUrl}}/auth/register
+Content-Type: {{contentType}}
+
+{
+  "firstName": "Invalid",
+  "lastName": "Email",
+  "email": "invalid-email",
+  "password": "password123",
+  "phone": "+1234567892",
+  "role": "CUSTOMER"
+}
+
+### 13. Test with short password (should fail)
+POST {{baseUrl}}/auth/register
+Content-Type: {{contentType}}
+
+{
+  "firstName": "Short",
+  "lastName": "Password",
+  "email": "shortpass@example.com",
+  "password": "123",
+  "phone": "+1234567893",
+  "role": "CUSTOMER"
+}
+
+### 14. Test duplicate email registration (should fail)
+POST {{baseUrl}}/auth/register
+Content-Type: {{contentType}}
+
+{
+  "firstName": "Duplicate",
+  "lastName": "Email",
+  "email": "{{testEmail}}",
+  "password": "password123",
+  "phone": "+1234567894",
+  "role": "CUSTOMER"
+}
+
+### 15. Test duplicate phone registration (should fail)
+POST {{baseUrl}}/auth/register
+Content-Type: {{contentType}}
+
+{
+  "firstName": "Duplicate",
+  "lastName": "Phone",
+  "email": "duplicatephone@example.com",
+  "password": "password123",
+  "phone": "{{testPhone}}",
+  "role": "CUSTOMER"
+}
+
+### 16. Test access protected route without token (should fail)
+GET {{baseUrl}}/auth/profile
+
+### 17. Test access protected route with invalid token (should fail)
+GET {{baseUrl}}/auth/profile
+Authorization: Bearer invalid_token_here
+
+### 18. Test forgot password with non-existent email
+POST {{baseUrl}}/auth/forgot-password
+Content-Type: {{contentType}}
+
+{
+  "email": "nonexistent@example.com"
+}
+
+### 19. Test reset password with invalid token (should fail)
+POST {{baseUrl}}/auth/reset-password
+Content-Type: {{contentType}}
+
+{
+  "resetToken": "invalid_reset_token",
+  "newPassword": "newpassword123"
+}
+
+### 20. Test change password with wrong current password (should fail)
+POST {{baseUrl}}/auth/change-password
+Content-Type: {{contentType}}
+Authorization: Bearer {{accessToken}}
+
+{
+  "currentPassword": "wrongcurrentpassword",
+  "newPassword": "newpassword123"
+}
+
+###
+### Test Data Cleanup (Optional)
+### Note: You might want to add delete endpoints or manually clean test data
+###
+
+### Environment Variables for different stages
+### Development
+# @baseUrl = http://localhost:3000
+
+### Staging
+# @baseUrl = https://your-staging-api.com
+
+### Production
+# @baseUrl = https://your-production-api.com
